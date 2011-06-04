@@ -60,6 +60,7 @@ public class SMSSender extends BroadcastReceiver {
 	}
 
 	public void send(Context context, int userId, String phoneNumber, String message) {
+		Log.v(TAG, "Sending SMS to "+phoneNumber);
 		SmsManager.getDefault().sendTextMessage(phoneNumber, null, message,
 				createPI(context,userId,phoneNumber,SENT),
 				createPI(context,userId,phoneNumber,DELIVERED)
