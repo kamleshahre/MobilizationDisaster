@@ -1,9 +1,11 @@
 package org.rhok.mobilizationDisaster;
 
+import org.rhok.mobilizationDisaster.providers.ResponseStatus.ResponseStates;
 import org.rhok.mobilizationDisaster.sender.SMSSender;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +25,13 @@ public class main extends Activity {
     	s.send(getApplicationContext(), 23, "0172-8757502", "Hallo Uwe!");
     	
         m_contacts = new PhoneBook(getContentResolver());
+        
+        // this is how you use content providers
+        Cursor cur = getContentResolver().query(ResponseStates.CONTENT_URI, null, null, null, null);
+        if(cur.moveToFirst()) {
+        	Log.v("bla", cur.getString(cur.getColumnIndex(ResponseStates.TEXT)));
+        }
+        cur.close();
         m_contacts.getEverything();
         m_contacts.getStarred();
     	super.onCreate(savedInstanceState);
