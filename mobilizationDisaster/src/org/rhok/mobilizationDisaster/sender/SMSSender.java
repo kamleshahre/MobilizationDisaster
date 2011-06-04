@@ -51,7 +51,7 @@ public class SMSSender extends BroadcastReceiver {
 			break;
 		}};
 	
-	private PendingIntent getPI(Context context,int userId, String phoneNumber,String intentFilter ) {
+	private PendingIntent createPI(Context context,int userId, String phoneNumber,String intentFilter ) {
 
 		Intent i = new Intent(intentFilter);
 		i.putExtra(intent_userId, userId);		
@@ -61,8 +61,8 @@ public class SMSSender extends BroadcastReceiver {
 
 	public void send(Context context, int userId, String phoneNumber, String message) {
 		SmsManager.getDefault().sendTextMessage(phoneNumber, null, message,
-				getPI(context,userId,phoneNumber,SENT),
-				getPI(context,userId,phoneNumber,DELIVERED)
+				createPI(context,userId,phoneNumber,SENT),
+				createPI(context,userId,phoneNumber,DELIVERED)
 			);
 	}
 }
