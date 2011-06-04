@@ -18,24 +18,24 @@ public class SMSSender extends BroadcastReceiver {
 	private Context m_context;
 	private SmsManager m_smsmanager;
 	
-	public SMSSender (Context context);
+	public SMSSender (Context context)
 	{
 		m_context = context;
 		m_smsmanager = SmsManager.getDefault();
 		
-		registerReceiver()
+		m_context.registerReceiver (this, new IntentFilter(SENT));
+		m_context.registerReceiver (this, new IntentFilter(DELIVERED));
 	}
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		switch (getResultCode()) {
 		case Activity.RESULT_OK:
-			if(Intent.)
-			Toast.makeText(m_context, "SMS sent", Toast.LENGTH_SHORT)
+			Toast.makeText(m_context, "SMS sent/delivered", Toast.LENGTH_SHORT)
 					.show();
 			break;
 		case Activity.RESULT_CANCELED:
-			Toast.makeText(getBaseContext(), "SMS not delivered",
+			Toast.makeText(m_context, "SMS not delivered",
 					Toast.LENGTH_SHORT).show();
 			break;
 		case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
