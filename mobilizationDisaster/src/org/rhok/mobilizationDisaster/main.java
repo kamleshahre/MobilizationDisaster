@@ -17,7 +17,7 @@ public class main extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         m_contacts = new PhoneBook(getContentResolver());
         m_contacts.getEverything();
-        m_contacts.getGroup("responders");
+        m_contacts.getStarred();
     	super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
     

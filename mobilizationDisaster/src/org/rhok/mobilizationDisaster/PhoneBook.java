@@ -35,16 +35,19 @@ public class PhoneBook {
 	}
 	
 	/**
-	 * Get all the entries for a particular group
+	 * Get all the entries that are 'starred' (have star)
 	 */
-	public List<PhoneBookEntry> getGroup(String groupName) {
+	public List<PhoneBookEntry> getStarred() {
 		List<PhoneBookEntry> entries = new ArrayList<PhoneBookEntry>();
-		Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+		Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI, 
+			null, 
+			ContactsContract.Contacts.STARRED + " = ?", 
+			new String[]{"1"}, 
+			null);
         if(cur.getCount() > 0) {
         	while(cur.moveToNext()) {
         		boolean hasPhoneNumber = 
         			(cur.getInt(cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0);
-        		
         		if(hasPhoneNumber) {
         			String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
             		String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
@@ -65,7 +68,7 @@ public class PhoneBook {
 			null, 
  		    ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?", 
  		    new String[]{id}, null);
- 	    while (pCur.moveToFirst()) {
+ 	    if(pCur.moveToFirst()) {
  	    	number = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
  	    } 
         pCur.close();
