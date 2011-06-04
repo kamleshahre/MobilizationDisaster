@@ -3,6 +3,7 @@ package org.rhok.mobilizationDisaster;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -15,6 +16,7 @@ public class main extends Activity {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	Log.v("bla", "blub");
         m_contacts = new PhoneBook(getContentResolver());
         m_contacts.getEverything();
         m_contacts.getStarred();

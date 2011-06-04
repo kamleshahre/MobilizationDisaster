@@ -29,11 +29,16 @@
 				<action android:name="android.provider.Telephony.SMS_RECEIVED" />
 			</intent-filter>
 		</receiver>
+
 		<receiver android:name=".receiver.SMSSender" android:enabled="true">
 			<intent-filter>
 				<action android:name="android.provider.Telephony.SMS_SENT" />
 				<action android:name="android.provider.Telephony.SMS_DELIVERED" />
 			</intent-filter>
 		</receiver>
+
+		<provider android:name="org.rhok.mobilizationDisaster.providers.ResponseStatusProvider" 
+			android:authorities="org.rhok.mobilizationDisaster.providers.ResponseStatusProvider" />
+
     </application>
 </manifest>
