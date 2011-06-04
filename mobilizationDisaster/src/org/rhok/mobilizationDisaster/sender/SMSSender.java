@@ -14,15 +14,25 @@ public class SMSSender extends BroadcastReceiver {
 
 	private static final String TAG = "SMSSender";
 	
+	// declaration of 'Intent'-payload names
+	private static final String intent_userId = TAG+".userId";
+	private static final String intent_phoneNumber = TAG+".phoneNumber";
+
 	// internal Intent filter strings
 	private static final String SENT = "SMS_SENT";
 	private static final String DELIVERED = "SMS_DELIVERED";		
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		int userId;
+		
+		// verify if it's an answer to our call 
+		if((userId = intent.getIntExtra(intent_userId, 0))==0)
+			return;
+		
 		switch (getResultCode()) {
 		case Activity.RESULT_OK:
-			Log.v(TAG, "SMS sent/delivered");
+			Log.v(TAG, "SMS sent/delivered for UID="+userId);
 			break;
 		case Activity.RESULT_CANCELED:
 			Log.v(TAG, "SMS not delivered");
@@ -40,20 +50,19 @@ public class SMSSender extends BroadcastReceiver {
 			Log.v(TAG,  "Radio off");
 			break;
 		}};
-		
-	private PendingIntent getPI(Context context,int userID, String phoneNumber, String intentFilter ) {
+	
+	private PendingIntent getPI(Context context,int userId, String phoneNumber,String intentFilter ) {
 
 		Intent i = new Intent(intentFilter);
-		i.putExtra("userID", userID);
-		i.putExtra("phoneNumber", phoneNumber);
-		
+		i.putExtra(intent_userId, userId);		
+		i.putExtra(intent_phoneNumber, userId);		
 		return PendingIntent.getBroadcast(context, 0, i, 0); 
 	}
 
-	public void send(Context context, int userID, String phoneNumber, String message) {
+	public void send(Context context, int userId, String phoneNumber, String message) {
 		SmsManager.getDefault().sendTextMessage(phoneNumber, null, message,
-				getPI(context,userID,phoneNumber,SENT),
-				getPI(context,userID,phoneNumber,DELIVERED)
+				getPI(context,userId,phoneNumber,SENT),
+				getPI(context,userId,phoneNumber,DELIVERED)
 			);
 	}
 }
