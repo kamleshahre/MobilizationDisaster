@@ -12,7 +12,8 @@ public class main extends Activity {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        mContacts = new ContactsGatherer(getContentResolver());
+    	super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
     
         final Button button1 = (Button) findViewById(R.id.button1);
@@ -31,4 +32,6 @@ public class main extends Activity {
         });
         
     }
+    
+    public ContactsGatherer mContacts;
 }
