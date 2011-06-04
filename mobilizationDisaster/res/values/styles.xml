@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="responseListItem" parent="@android:style/TextAppearance.Medium">
+        <!-- <item name="android:textColor">#ffffff</item>--> 
+		<item name="android:background">#888888</item>
+    </style>
+    
+    <color name="responseListItemAcceptedColor">#a8d27b</color>
+	<color name="responseListItemDeniedColor">#d2897b</color>
+	<color name="responseListItemPendingColor">#888888</color>
+</resources>
