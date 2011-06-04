@@ -9,10 +9,15 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class main extends Activity {
+	
+    public PhoneBook m_contacts;
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-    	mContacts = new ContactsGatherer(getContentResolver());
+        m_contacts = new PhoneBook(getContentResolver());
+        m_contacts.getEverything();
+        m_contacts.getGroup("responders");
     	super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
     
@@ -32,6 +37,4 @@ public class main extends Activity {
         });
         
     }
-    
-    public ContactsGatherer mContacts;
 }
