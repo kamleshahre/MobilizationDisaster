@@ -18,6 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+		<activity android:name=".ResponseStatus"
+                  android:label="@string/responseStatus">
+            
+        </activity>
 
 		<receiver android:name=".receiver.SMSReceiver" android:enabled="true">
 			<intent-filter>
