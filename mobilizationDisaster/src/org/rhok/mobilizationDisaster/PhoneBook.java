@@ -39,11 +39,15 @@ public class PhoneBook {
 	 */
 	public List<PhoneBookEntry> getStarred() {
 		List<PhoneBookEntry> entries = new ArrayList<PhoneBookEntry>();
+		
+		// select the starred contacts from the phone book
 		Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI, 
 			null, 
 			ContactsContract.Contacts.STARRED + " = ?", 
 			new String[]{"1"}, 
 			null);
+		
+		// extract infos
         if(cur.getCount() > 0) {
         	while(cur.moveToNext()) {
         		boolean hasPhoneNumber = 
@@ -56,7 +60,7 @@ public class PhoneBook {
             }
         }
         cur.close();
-		return entries;
+        return entries;
 	}
 	
 	/**
