@@ -1,5 +1,7 @@
 package org.rhok.mobilizationDisaster;
 
+import org.rhok.mobilizationDisaster.sender.SMSSender;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +19,9 @@ public class main extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	Log.v("bla", "blub");
+    	SMSSender s = new SMSSender();
+    	s.send(getApplicationContext(), 23, "0172-8757502", "Hallo Uwe!");
+    	
         m_contacts = new PhoneBook(getContentResolver());
         m_contacts.getEverything();
         m_contacts.getStarred();
