@@ -12,6 +12,6 @@ gen
 *.class
 
 # generated GUI files
-*R.java
+#*R.java
 
 .metadata/*
