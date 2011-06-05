@@ -43,6 +43,7 @@ public class main extends Activity {
                 Toast.makeText(main.this, "Alarm ausgelšst", Toast.LENGTH_SHORT).show();
             }
         });
+        
         final Button button2 = (Button) findViewById(R.id.button2);
         button2.setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
@@ -50,6 +51,15 @@ public class main extends Activity {
                 startActivityForResult(myIntent, 0);
             }
         });
+        
+        final Button button3 = (Button) findViewById(R.id.button3);
+        button3.setOnClickListener(new OnClickListener() {
+            public void onClick(View view) {
+            	Intent myIntent = new Intent(view.getContext(), HelloTabWidget.class);
+                startActivityForResult(myIntent, 0);
+            }
+        });
+        
         
     }
 }
