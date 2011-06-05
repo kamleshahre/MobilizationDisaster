@@ -1,12 +1,20 @@
 package org.rhok.mobilizationDisaster;
 
 import android.app.TabActivity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TabHost;
 
 public class HelloTabWidget extends TabActivity{
+	
+	public final String TAG = "HelloTabWidget";
+	public static final String INTENT_UPDATE_LIST = "org.rhok.mobilizationDisaster.Intent.UpdateList";
+	
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.tab_main);
@@ -53,5 +61,20 @@ public class HelloTabWidget extends TabActivity{
 	   
 
 	    tabHost.setCurrentTab(2);
+	    
+	    IntentFilter filter = new IntentFilter();
+	    filter.addAction(HelloTabWidget.INTENT_UPDATE_LIST);
+	    registerReceiver(new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				HelloTabWidget.this.refresh();
+			}
+	    	
+	    }, filter);
+	}
+	
+	public void refresh() {
+		// TODO implement
+		Log.v(TAG, "Updating list...");
 	}
 }

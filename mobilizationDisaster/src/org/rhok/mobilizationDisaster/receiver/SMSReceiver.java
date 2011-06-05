@@ -1,5 +1,9 @@
 package org.rhok.mobilizationDisaster.receiver;
 
+import org.rhok.mobilizationDisaster.HelloTabWidget;
+import org.rhok.mobilizationDisaster.ResponseStatusModel;
+import org.rhok.mobilizationDisaster.providers.ResponseStatus;
+
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -37,7 +41,7 @@ public class SMSReceiver extends BroadcastReceiver {
 		if (contactId != null) {
 			Toast.makeText(context, "Received SMS from Responder with ID " + contactId+ ": " + body, Toast.LENGTH_LONG).show();
 			if (isResponder(smsMessage)) {
-				handleResponderSms(context, smsMessage);
+				handleResponderSms(context, contactId, body);
 			} else {
 				// Not interested
 			}
@@ -61,7 +65,12 @@ public class SMSReceiver extends BroadcastReceiver {
 		return true;
 	}
 	
-	public void handleResponderSms(Context context, SmsMessage smsMessage) {
-		// TODO implement
+	public void handleResponderSms(Context context, String contactId, String messageBody) {
+		ResponseStatusModel rsm = new ResponseStatusModel(context.getContentResolver());
+		// FIXME contactId can actually be a Long
+		rsm.update((int)Integer.parseInt(contactId), ResponseStatusModel.RESPONDER_STATE_YES, messageBody, null, -1);
+		Intent intent = new Intent();
+		intent.setAction(HelloTabWidget.INTENT_UPDATE_LIST);
+		context.sendBroadcast(intent);
 	}
 }
