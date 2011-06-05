@@ -20,11 +20,28 @@ public class SMSSender extends BroadcastReceiver {
 
 	// internal Intent filter strings
 	private static final String SENT = "SMS_SENT";
-	private static final String DELIVERED = "SMS_DELIVERED";		
+	private static final String DELIVERED = "SMS_DELIVERED";
+	private Context m_context;
+	
+	public SMSSender()
+	{
+		m_context = null; 
+	}
+
+	public SMSSender(Context context)
+	{
+		m_context = context;
+		
+		// register intent filters for my context
+		context.registerReceiver(this, new IntentFilter(SENT));
+		context.registerReceiver(this, new IntentFilter(DELIVERED));
+	}
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		int userId;
+
+		Log.v(TAG, "onReceive");
 		
 		// verify if it's an answer to our call 
 		if((userId = intent.getIntExtra(intent_userId, 0))==0)
@@ -49,6 +66,8 @@ public class SMSSender extends BroadcastReceiver {
 		case SmsManager.RESULT_ERROR_RADIO_OFF:
 			Log.v(TAG,  "Radio off");
 			break;
+		default:
+			Log.v(TAG, "Unknown Result Code "+getResultCode());		
 		}};
 	
 	private PendingIntent createPI(Context context,int userId, String phoneNumber,String intentFilter ) {
@@ -59,11 +78,12 @@ public class SMSSender extends BroadcastReceiver {
 		return PendingIntent.getBroadcast(context, 0, i, 0); 
 	}
 
-	public void send(Context context, int userId, String phoneNumber, String message) {
+	public void send(int userId, String phoneNumber, String message) {
 		Log.v(TAG, "Sending SMS to "+phoneNumber);
-		SmsManager.getDefault().sendTextMessage(phoneNumber, null, message,
-				createPI(context,userId,phoneNumber,SENT),
-				createPI(context,userId,phoneNumber,DELIVERED)
-			);
+
+		if (m_context != null)
+			SmsManager.getDefault().sendTextMessage(phoneNumber, null, message,
+					createPI(m_context, userId, phoneNumber, SENT),
+					createPI(m_context, userId, phoneNumber, DELIVERED));
 	}
 }

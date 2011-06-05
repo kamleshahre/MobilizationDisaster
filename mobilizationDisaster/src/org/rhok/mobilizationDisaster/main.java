@@ -22,8 +22,8 @@ public class main extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	Log.v("bla", "blub");
-    	SMSSender s = new SMSSender();
-    	s.send(getApplicationContext(), 23, "0172-8757502", "Hallo Uwe!");
+    	SMSSender sms = new SMSSender(getApplicationContext());
+    	sms.send(23, "0172-8757502", "Hallo Uwe!");
     	
         m_contacts = new PhoneBook(getContentResolver());
         m_model = new ResponseStatusModel(getContentResolver());
@@ -37,7 +37,7 @@ public class main extends Activity {
         button1.setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
                 // Perform action on clicks
-                Toast.makeText(main.this, "Alarm ausgelšst", Toast.LENGTH_SHORT).show();
+                Toast.makeText(main.this, "Alarm ausgelï¿½st", Toast.LENGTH_SHORT).show();
             }
         });
         final Button button2 = (Button) findViewById(R.id.button2);
