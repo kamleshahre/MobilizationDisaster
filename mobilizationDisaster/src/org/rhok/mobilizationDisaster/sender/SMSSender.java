@@ -41,15 +41,18 @@ public class SMSSender extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		int userId;
 
-		Log.v(TAG, "onReceive");
-		
 		// verify if it's an answer to our call 
 		if((userId = intent.getIntExtra(intent_userId, 0))==0)
 			return;
 		
 		switch (getResultCode()) {
 		case Activity.RESULT_OK:
-			Log.v(TAG, "SMS sent/delivered for UID="+userId);
+			String reason = intent.getAction(); 
+			if(reason.equals(SENT))
+				Log.v(TAG, "SMS sent for UID="+userId);
+			else
+				if(reason.equals(DELIVERED))
+					Log.v(TAG, "SMS delivered for UID="+userId);
 			break;
 		case Activity.RESULT_CANCELED:
 			Log.v(TAG, "SMS not delivered");
