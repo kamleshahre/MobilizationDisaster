@@ -84,6 +84,28 @@ public class ResponseStatusModel {
 			cr.insert(ResponseStates.CONTENT_URI, values);
 		}
 	}
+	public List<PhoneBookEntry> getPendingNumbers()
+	{
+		List<PhoneBookEntry> list = new ArrayList<PhoneBookEntry>();
+		Cursor cur = cr.query(ResponseStates.CONTENT_URI, 
+			null, 
+			ResponseStates.STATE + " < ?", 
+			new String[] { "10" },
+			null);
+		
+        while(cur.moveToNext()) {
+        	String userId = cur.getString(cur.getColumnIndex(ResponseStates.ID));
+        	PhoneBook pb = new PhoneBook(cr);
+        	PhoneBookEntry entry = pb.getEntryById(userId);
+        	if(entry.getDisplayName() != null)
+        	{
+        		list.add(entry);
+        	}
+        }
+        
+        cur.close();
+        return list;
+	}
 	
 	public String[] getPending()
 	{
