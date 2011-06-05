@@ -77,8 +77,8 @@ public class ResponseStatusModel {
 	
 	public String[] getPending()
 	{
-		return getListByCriterion(ResponseStates.STATE + " <= ?",
-			new String[] { new Integer(RESPONDER_STATE_DELIVERED).toString() });
+		return getListByCriterion(ResponseStates.STATE + " < ?",
+			new String[] { "10" });
 	}
 	
 	public String[] getYes()
@@ -119,7 +119,10 @@ public class ResponseStatusModel {
         }
         
         cur.close();
-        
-        return (String[]) list.toArray();
+        String[] result = new String[list.size()];
+        for(int i = 0; i < list.size(); ++i) {
+        	result[i] = list.get(i);
+        }
+        return result;
 	}
 }
