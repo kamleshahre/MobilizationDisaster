@@ -37,24 +37,25 @@ public class SMSReceiver extends BroadcastReceiver {
 	public void handleSms(Context context, SmsMessage smsMessage) { 
 		String sender = smsMessage.getOriginatingAddress();
 		String body = smsMessage.getMessageBody();	
-		String contactId = getContactIdForNumber(context, sender);
-		if (contactId != null) {
-			Toast.makeText(context, "Received SMS from Responder with ID " + contactId+ ": " + body, Toast.LENGTH_LONG).show();
+		Cursor contact = getContactForNumber(context, sender);
+		if (contact != null) {
+			String contactId = contact.getString(0);
+			String fullName = contact.getString(1);
+			//Toast.makeText(context, "Received SMS from Responder with ID " + contactId+ ": " + body, Toast.LENGTH_LONG).show();
 			if (isResponder(smsMessage)) {
-				handleResponderSms(context, contactId, body);
+				handleResponderSms(context, contactId, fullName, body);
 			} else {
 				// Not interested
 			}
 		}
 	}
 	
-	public String getContactIdForNumber(Context context, String phoneNumber) {
+	public Cursor getContactForNumber(Context context, String phoneNumber) {
 		 Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
 		 ContentResolver cr = context.getContentResolver();
-		 Cursor cursor = cr.query(uri, new String[]{PhoneLookup._ID}, null, null, null);
+		 Cursor cursor = cr.query(uri, new String[]{PhoneLookup._ID, PhoneLookup.DISPLAY_NAME}, null, null, null);
 		 if (cursor.moveToFirst()) {
-			 String contactId = cursor.getString(0);
-			 return contactId;
+			 return cursor;
 		 } else {
 			 return null;
 		 }
@@ -65,12 +66,15 @@ public class SMSReceiver extends BroadcastReceiver {
 		return true;
 	}
 	
-	public void handleResponderSms(Context context, String contactId, String messageBody) {
+	public void handleResponderSms(Context context, String contactId, String contactName, String messageBody) {
 		ResponseStatusModel rsm = new ResponseStatusModel(context.getContentResolver());
 		// FIXME contactId can actually be a Long
 		rsm.update((int)Integer.parseInt(contactId), ResponseStatusModel.RESPONDER_STATE_YES, messageBody, null, -1);
 		Intent intent = new Intent();
 		intent.setAction(HelloTabWidget.INTENT_UPDATE_LIST);
+		intent.putExtra("contactId", contactId);
+		intent.putExtra("contactName", contactName);
+		intent.putExtra("smsBody", messageBody);
 		context.sendBroadcast(intent);
 	}
 }
