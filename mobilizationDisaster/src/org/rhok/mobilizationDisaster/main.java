@@ -37,7 +37,7 @@ public class main extends Activity {
         button1.setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
                 // Perform action on clicks
-                Toast.makeText(main.this, "Alarm ausgelï¿½st", Toast.LENGTH_SHORT).show();
+                Toast.makeText(main.this, "Alarm ausgelšst", Toast.LENGTH_SHORT).show();
             }
         });
         final Button button2 = (Button) findViewById(R.id.button2);
