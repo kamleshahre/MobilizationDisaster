@@ -46,14 +46,14 @@ public class HelloTabWidget extends TabActivity{
 	                  .setContent(intent);
 	    tabHost.addTab(spec);
 
-	    intent = new Intent().setClass(this, TabAllActivity.class);
-	    spec = tabHost.newTabSpec("all").setIndicator("Abgelehnt",
+	    intent = new Intent().setClass(this, TabDeclinedActivity.class);
+	    spec = tabHost.newTabSpec("declined").setIndicator("Abgelehnt",
 	                      res.getDrawable(R.drawable.icon_tab_test))
 	                  .setContent(intent);
 	    tabHost.addTab(spec);
 
-	    intent = new Intent().setClass(this, TabAllActivity.class);
-	    spec = tabHost.newTabSpec("unknown").setIndicator("Unbekannt",
+	    intent = new Intent().setClass(this, TabPendingActivity.class);
+	    spec = tabHost.newTabSpec("pending").setIndicator("Unbekannt",
 	                      res.getDrawable(R.drawable.icon_tab_test))
 	                  .setContent(intent);
 	    tabHost.addTab(spec);
