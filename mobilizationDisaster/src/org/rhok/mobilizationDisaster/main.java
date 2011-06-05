@@ -16,6 +16,7 @@ import android.widget.Toast;
 public class main extends Activity {
 	
     public PhoneBook m_contacts;
+    public ResponseStatusModel m_model;
 	
     /** Called when the activity is first created. */
     @Override
@@ -25,13 +26,8 @@ public class main extends Activity {
     	s.send(getApplicationContext(), 23, "0172-8757502", "Hallo Uwe!");
     	
         m_contacts = new PhoneBook(getContentResolver());
+        m_model = new ResponseStatusModel(getContentResolver());
         
-        // this is how you use content providers
-        Cursor cur = getContentResolver().query(ResponseStates.CONTENT_URI, null, null, null, null);
-        if(cur.moveToFirst()) {
-        	Log.v("bla", cur.getString(cur.getColumnIndex(ResponseStates.TEXT)));
-        }
-        cur.close();
         m_contacts.getEverything();
         m_contacts.getStarred();
     	super.onCreate(savedInstanceState);

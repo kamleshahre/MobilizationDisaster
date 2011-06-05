@@ -26,7 +26,7 @@ public class PhoneBook {
         		String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
         		String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
         		if (cur.getInt(cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
-        			entries.add( new PhoneBookEntry(id, name, getPhoneNumberById(id)) );
+        			entries.add( getEntryById(id) );
         		}
             }
         }
@@ -55,7 +55,7 @@ public class PhoneBook {
         		if(hasPhoneNumber) {
         			String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
             		String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-        			entries.add(new PhoneBookEntry(id, name, getPhoneNumberById(id)));
+        			entries.add(getEntryById(id));
         		}
             }
         }
@@ -66,17 +66,19 @@ public class PhoneBook {
 	/**
 	 * Queries a phone number by id
 	 */
-	public String getPhoneNumberById(String id) {
+	public PhoneBookEntry getEntryById(String id) {
 		String number = null;
+		String name = null;
 		Cursor pCur = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, 
 			null, 
  		    ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?", 
  		    new String[]{id}, null);
  	    if(pCur.moveToFirst()) {
  	    	number = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+ 	    	name = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
  	    } 
         pCur.close();
-        return number;
+        return new PhoneBookEntry(id, name, number);
 	}
 	// members
 	public ContentResolver cr;
