@@ -15,3 +15,5 @@ gen
 #*R.java
 
 .metadata/*
+
+.DS_Store
