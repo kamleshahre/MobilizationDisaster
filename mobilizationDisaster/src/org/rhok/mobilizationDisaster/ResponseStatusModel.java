@@ -24,9 +24,10 @@ public class ResponseStatusModel {
 	
 	// the different states one person can be in
 	public static final int RESPONDER_STATE_IDLE = 0;
-	// Success - Worker Status (1-99):
-	public static final int RESPONDER_STATE_SENT = 1;
-	public static final int RESPONDER_STATE_DELIVERED = 2;
+	public static final int RESPONDER_STATE_ERROR = 1;
+	// Success - Worker Status (2-99):
+	public static final int RESPONDER_STATE_SENT = 2;
+	public static final int RESPONDER_STATE_DELIVERED = 3;
 	// Success - Final Status (100-199):
 	public static final int RESPONDER_STATE_YES = 100;
 	public static final int RESPONDER_STATE_NO = 101;
