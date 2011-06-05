@@ -32,7 +32,10 @@ public class main extends Activity {
         m_contacts.getStarred();
         
         m_model.startAlerting();
-        String[] bla = m_model.getPending();
+        String[] pending = m_model.getPending();
+        String[] accepted = m_model.getYes();
+        String[] declined = m_model.getNo();   
+       
     	super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
     
