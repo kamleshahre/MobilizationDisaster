@@ -1,5 +1,6 @@
 package org.rhok.mobilizationDisaster;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,13 +42,21 @@ public class ResponseStatusModel {
 	}
 	
 	public void update(int userId, int state, String text, Date time, int tries) {
-		SimpleDateFormat df = new SimpleDateFormat();
-		String timeStr = df.format(time);
 		ContentValues values = new ContentValues();
-		values.put(ResponseStates.STATE, state);
-		values.put(ResponseStates.TEXT,  text);
-		values.put(ResponseStates.TIME,  timeStr);
-		values.put(ResponseStates.TRIES, tries);
+		if (state != -1) {
+			values.put(ResponseStates.STATE, state);
+		}
+		if (text != null) {
+			values.put(ResponseStates.TEXT,  text);
+		}
+		if (time != null) {
+			SimpleDateFormat df = new SimpleDateFormat();
+			String timeStr = df.format(time);
+			values.put(ResponseStates.TIME,  timeStr);
+		}
+		if (tries != -1) {
+			values.put(ResponseStates.TRIES, tries);
+		}
 		cr.update(ResponseStates.CONTENT_URI, values, ResponseStates.ID + " = ?", 
 			new String[] { new Integer(userId).toString() } );
 	}
@@ -59,7 +68,7 @@ public class ResponseStatusModel {
 	{
 		SimpleDateFormat df = new SimpleDateFormat();
 		String timeStr = df.format(new Date());
-		
+
 		cr.delete(ResponseStates.CONTENT_URI, null, null);
 		PhoneBook pb = new PhoneBook(cr);
 		List<PhoneBookEntry> everybody = pb.getStarred();
