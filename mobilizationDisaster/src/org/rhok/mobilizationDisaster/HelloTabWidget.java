@@ -62,7 +62,7 @@ public class HelloTabWidget extends TabActivity{
 
 	   
 
-	    tabHost.setCurrentTab(2);
+	    tabHost.setCurrentTab(4);
 	    
 	    IntentFilter filter = new IntentFilter();
 	    filter.addAction(HelloTabWidget.INTENT_UPDATE_LIST);
