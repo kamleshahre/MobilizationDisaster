@@ -1,11 +1,9 @@
 package org.rhok.mobilizationDisaster;
 
-import org.rhok.mobilizationDisaster.providers.ResponseStatus.ResponseStates;
 import org.rhok.mobilizationDisaster.sender.SMSSender;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,8 +20,6 @@ public class main extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	Log.v("bla", "blub");
-    	SMSSender s = new SMSSender();
-    	//s.send(getApplicationContext(), 23, "0172-8757502", "Hallo Uwe!");
     	
         m_contacts = new PhoneBook(getContentResolver());
         m_model = new ResponseStatusModel(getContentResolver());
@@ -32,18 +28,21 @@ public class main extends Activity {
         m_contacts.getStarred();
         
         m_model.startAlerting();
+
+        SMSSender sms = new SMSSender(getApplicationContext(), m_model);
+        sms.send(23, "0172-8757502", "Hallo Uwe!");
+
         String[] pending = m_model.getPending();
         String[] accepted = m_model.getYes();
         String[] declined = m_model.getNo();   
-       
-    	super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-    
+
         final Button button1 = (Button) findViewById(R.id.button1);
         button1.setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
                 // Perform action on clicks
-                Toast.makeText(main.this, "Alarm ausgelöst", Toast.LENGTH_SHORT).show();
+                Toast.makeText(main.this, "Alarm ausgel√∂st", Toast.LENGTH_SHORT).show();
             }
         });
         

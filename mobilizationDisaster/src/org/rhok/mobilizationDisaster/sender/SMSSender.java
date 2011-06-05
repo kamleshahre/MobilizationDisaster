@@ -1,5 +1,7 @@
 package org.rhok.mobilizationDisaster.sender;
 
+import java.util.Date;
+import org.rhok.mobilizationDisaster.ResponseStatusModel;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -22,16 +24,19 @@ public class SMSSender extends BroadcastReceiver {
 	private static final String SENT = "SMS_SENT";
 	private static final String DELIVERED = "SMS_DELIVERED";
 	private Context m_context;
+    private ResponseStatusModel m_model;
 	
 	public SMSSender()
 	{
-		m_context = null; 
+		m_context = null;
+		m_model = null;
 	}
 
-	public SMSSender(Context context)
+	public SMSSender(Context context, ResponseStatusModel model)
 	{
 		m_context = context;
-		
+		m_model = model;
+
 		// register intent filters for my context
 		context.registerReceiver(this, new IntentFilter(SENT));
 		context.registerReceiver(this, new IntentFilter(DELIVERED));
@@ -39,39 +44,35 @@ public class SMSSender extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		
+
+		ResponseStatusModel model;
 		int res,userId;
 
 		// verify if it's an answer to our call 
 		if((userId = intent.getIntExtra(intent_userId, 0))==0)
 			return;
-		
+
+		model = (m_model != null) ? m_model :
+			new ResponseStatusModel(context.getContentResolver());
+
 		switch (res = getResultCode()) {
 		case Activity.RESULT_OK:
 			String reason = intent.getAction(); 
 			if(reason.equals(SENT))
+			{
 				Log.v(TAG, "SMS sent for UID="+userId);
+				model.update(userId, ResponseStatusModel.RESPONDER_STATE_SENT, new Date(), null, -1);
+			}
 			else
 				if(reason.equals(DELIVERED))
+				{
 					Log.v(TAG, "SMS delivered for UID="+userId);
-			break;
-		case Activity.RESULT_CANCELED:
-			Log.v(TAG, "SMS not delivered");
-			break;
-		case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-			Log.v(TAG, "Generic failure");
-			break;
-		case SmsManager.RESULT_ERROR_NO_SERVICE:
-			Log.v(TAG, "No service");
-			break;
-		case SmsManager.RESULT_ERROR_NULL_PDU:
-			Log.v(TAG, "Null PDU");
-			break;
-		case SmsManager.RESULT_ERROR_RADIO_OFF:
-			Log.v(TAG,  "Radio off");
+					model.update(userId, ResponseStatusModel.RESPONDER_STATE_DELIVERED, null, new Date(), -1);
+				}
 			break;
 		default:
 			Log.v(TAG, "Error code "+res);		
+			model.update(userId, ResponseStatusModel.RESPONDER_STATE_ERROR, null, new Date(), -1);
 		}};
 	
 	private PendingIntent createPI(Context context,int userId, String phoneNumber,String intentFilter ) {
