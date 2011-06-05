@@ -39,13 +39,14 @@ public class SMSSender extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		int userId;
+		
+		int res,userId;
 
 		// verify if it's an answer to our call 
 		if((userId = intent.getIntExtra(intent_userId, 0))==0)
 			return;
 		
-		switch (getResultCode()) {
+		switch (res = getResultCode()) {
 		case Activity.RESULT_OK:
 			String reason = intent.getAction(); 
 			if(reason.equals(SENT))
@@ -70,7 +71,7 @@ public class SMSSender extends BroadcastReceiver {
 			Log.v(TAG,  "Radio off");
 			break;
 		default:
-			Log.v(TAG, "Unknown Result Code "+getResultCode());		
+			Log.v(TAG, "Error code "+res);		
 		}};
 	
 	private PendingIntent createPI(Context context,int userId, String phoneNumber,String intentFilter ) {
