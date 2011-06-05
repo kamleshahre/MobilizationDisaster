@@ -29,32 +29,32 @@ public class HelloTabWidget extends TabActivity{
 
 	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    spec = tabHost.newTabSpec("start").setIndicator("Start",
-	                      res.getDrawable(R.drawable.icon_tab_test))
+	                      res.getDrawable(R.drawable.icon_tab_start))
 	                  .setContent(intent);
 	    tabHost.addTab(spec);
 
 	    // Do the same for the other tabs
 	    intent = new Intent().setClass(this, TabAllActivity.class);
 	    spec = tabHost.newTabSpec("all").setIndicator("Alle",
-	                      res.getDrawable(R.drawable.icon_tab_test))
+	                      res.getDrawable(R.drawable.icon_tab_all))
 	                  .setContent(intent);
 	    tabHost.addTab(spec);
 	    
 	    intent = new Intent().setClass(this, TabAcceptedActivity.class);
 	    spec = tabHost.newTabSpec("accepted").setIndicator("Zugesagt",
-	                      res.getDrawable(R.drawable.icon_tab_test))
+	                      res.getDrawable(R.drawable.icon_tab_yes))
 	                  .setContent(intent);
 	    tabHost.addTab(spec);
 
 	    intent = new Intent().setClass(this, TabDeclinedActivity.class);
 	    spec = tabHost.newTabSpec("declined").setIndicator("Abgelehnt",
-	                      res.getDrawable(R.drawable.icon_tab_test))
+	                      res.getDrawable(R.drawable.icon_tab_no))
 	                  .setContent(intent);
 	    tabHost.addTab(spec);
 
 	    intent = new Intent().setClass(this, TabPendingActivity.class);
 	    spec = tabHost.newTabSpec("pending").setIndicator("Unbekannt",
-	                      res.getDrawable(R.drawable.icon_tab_test))
+	                      res.getDrawable(R.drawable.icon_tab_pending))
 	                  .setContent(intent);
 	    tabHost.addTab(spec);
 
