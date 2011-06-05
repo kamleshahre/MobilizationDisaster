@@ -11,15 +11,14 @@ import android.widget.Toast;
 import android.view.View;
 
 public class ResponseStatus extends ListActivity {
-
-	static final String[] TESTLIST = new String[] {
-	    "Anna Schmidt", "Bert Schneider", "Clark Griswold", "Dennis MŸller", "Emil Einstein", "Franz Ferdinand", "Gustav Gross", "Hans Meier", "Ines Irgendwas"};
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	  super.onCreate(savedInstanceState);
 	  
-	  setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, TESTLIST));
+	  ResponseStatusModel model = new ResponseStatusModel(getContentResolver());
+	  
+	  setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, model.getPending()));
 
 	  ListView lv = getListView();
 	  lv.setTextFilterEnabled(true);
