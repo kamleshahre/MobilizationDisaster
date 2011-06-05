@@ -9,6 +9,8 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TabHost;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class HelloTabWidget extends TabActivity{
 	
@@ -68,6 +70,11 @@ public class HelloTabWidget extends TabActivity{
 			@Override
 			public void onReceive(Context context, Intent intent) {
 				HelloTabWidget.this.refresh();
+				String contactName = intent.getStringExtra("contactName");
+				String response = intent.getStringExtra("smsBody");
+				String incomingNotification = "Antwort von " + contactName + ": " + response;
+				Toast.makeText(getApplicationContext(), incomingNotification,
+				          Toast.LENGTH_SHORT).show();
 			}
 	    	
 	    }, filter);

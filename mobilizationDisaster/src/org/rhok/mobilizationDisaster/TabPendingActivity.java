@@ -13,10 +13,6 @@ import android.widget.AdapterView.OnItemClickListener;
 public class TabPendingActivity extends Activity{
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        TextView textview = new TextView(this);
-        textview.setText("This is the Pending tab");
-        setContentView(textview);
         
 	  ResponseStatusModel model = new ResponseStatusModel(getContentResolver());
 	  

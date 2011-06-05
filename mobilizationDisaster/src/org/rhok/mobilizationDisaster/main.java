@@ -51,26 +51,19 @@ public class main extends Activity {
             		 sender.send(Integer.parseInt(i.getId()), i.getNumber(), 
         				 MESSAGE + df.format(new Date()) );
             	 }
-            	 Intent myIntent = new Intent(view.getContext(), ResponseStatus.class);
+            	 Intent myIntent = new Intent(view.getContext(), HelloTabWidget.class);
             	 startActivityForResult(myIntent, 0);
             }
         });
         
-        final Button button2 = (Button) findViewById(R.id.button2);
-        button2.setOnClickListener(new OnClickListener() {
-            public void onClick(View view) {
-            	Intent myIntent = new Intent(view.getContext(), ResponseStatus.class);
-                startActivityForResult(myIntent, 0);
-            }
-        });
         
-        final Button button3 = (Button) findViewById(R.id.button3);
-        button3.setOnClickListener(new OnClickListener() {
-            public void onClick(View view) {
-            	Intent myIntent = new Intent(view.getContext(), HelloTabWidget.class);
-                startActivityForResult(myIntent, 0);
-            }
-        });
+//        final Button button3 = (Button) findViewById(R.id.button3);
+//        button3.setOnClickListener(new OnClickListener() {
+//            public void onClick(View view) {
+//            	Intent myIntent = new Intent(view.getContext(), HelloTabWidget.class);
+//                startActivityForResult(myIntent, 0);
+//            }
+//        });
         
         
     }
