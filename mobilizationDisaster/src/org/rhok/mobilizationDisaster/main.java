@@ -1,5 +1,8 @@
 package org.rhok.mobilizationDisaster;
 
+import java.util.Date;
+import java.text.SimpleDateFormat;
+
 import org.rhok.mobilizationDisaster.sender.SMSSender;
 
 import android.app.Activity;
@@ -16,7 +19,7 @@ public class main extends Activity {
     public PhoneBook m_contacts;
     public ResponseStatusModel m_model;
     
-    public static final String MESSAGE = "Bitte in der Zentrale melden!";
+    public static final String MESSAGE = "Bitte in der Zentrale melden! Alarmierung gestartet um: ";
 	
     /** Called when the activity is first created. */
     @Override
@@ -28,11 +31,6 @@ public class main extends Activity {
         
         m_contacts.getEverything();
         m_contacts.getStarred();
-        
-       
-
-        SMSSender sms = new SMSSender(getApplicationContext(), m_model);
-        sms.send(23, "0172-8757502", "Hallo Uwe!");
 
         String[] pending = m_model.getPending();
         String[] accepted = m_model.getYes();
@@ -43,14 +41,18 @@ public class main extends Activity {
         final Button button1 = (Button) findViewById(R.id.button1);
         button1.setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
-                // Perform action on clicks
-                //Toast.makeText(main.this, "Alarm ausgelöst", Toast.LENGTH_SHORT).show();
+                 // Perform action on clicks
+                 Toast.makeText(main.this, "Alarm ausgeloest", Toast.LENGTH_SHORT).show();
             	 m_model.startAlerting();
             	 SMSSender sender = new SMSSender(getApplicationContext(), m_model);
             	 for(PhoneBookEntry i: m_model.getPendingNumbers())
             	 {
-            		 sender.send(Integer.parseInt(i.getId()), i.getNumber(), MESSAGE);
+            		 SimpleDateFormat df = new SimpleDateFormat();
+            		 sender.send(Integer.parseInt(i.getId()), i.getNumber(), 
+        				 MESSAGE + df.format(new Date()) );
             	 }
+            	 Intent myIntent = new Intent(view.getContext(), ResponseStatus.class);
+            	 startActivityForResult(myIntent, 0);
             }
         });
         
