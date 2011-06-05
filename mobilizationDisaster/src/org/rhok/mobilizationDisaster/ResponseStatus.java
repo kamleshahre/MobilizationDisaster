@@ -1,5 +1,8 @@
 package org.rhok.mobilizationDisaster;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.widget.AdapterView;
@@ -8,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.View;
+import android.view.View; 
 
 public class ResponseStatus extends ListActivity {
 	
@@ -34,6 +37,10 @@ public class ResponseStatus extends ListActivity {
 	          Toast.LENGTH_SHORT).show();
 	    }
 	  });
+	  Timer timer = new Timer();
+	  RefreshTask task = new RefreshTask();
+	  task.setListActivity(this);
+	  // timer.schedule(task, 1000, 1000);
 	}
 	
 	@Override
@@ -42,5 +49,16 @@ public class ResponseStatus extends ListActivity {
 		Toast.makeText(getApplicationContext(), "resumed!", Toast.LENGTH_SHORT).show();
 		//Toast.makeText(ResponseStatus.this, "resumed!", Toast.LENGTH_SHORT).show();
     }
+	
+	public class RefreshTask extends TimerTask {
+		public ListActivity l;
+		public void setListActivity(ListActivity l) {
+			this.l = l;
+		}
+		public void run() {
+			ResponseStatusModel model = new ResponseStatusModel(getContentResolver());
+			// TODO: Refresh!!!
+		}
+	}
 
 }
