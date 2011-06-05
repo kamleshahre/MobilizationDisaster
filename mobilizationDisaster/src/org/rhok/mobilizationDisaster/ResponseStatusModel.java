@@ -1,11 +1,14 @@
 package org.rhok.mobilizationDisaster;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.rhok.mobilizationDisaster.providers.ResponseStatus.ResponseStates;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.database.Cursor;
 
 /**
@@ -34,6 +37,42 @@ public class ResponseStatusModel {
 	public ResponseStatusModel(ContentResolver cr) {
 		this.cr = cr;
 		this.state = SLEEPING;
+	}
+	
+	public void update(int userId, int state, String text, Date time, int tries) {
+		SimpleDateFormat df = new SimpleDateFormat();
+		String timeStr = df.format(time);
+		ContentValues values = new ContentValues();
+		values.put(ResponseStates.STATE, state);
+		values.put(ResponseStates.TEXT,  text);
+		values.put(ResponseStates.TIME,  timeStr);
+		values.put(ResponseStates.TRIES, tries);
+		cr.update(ResponseStates.CONTENT_URI, values, ResponseStates.ID + " = ?", 
+			new String[] { new Integer(userId).toString() } );
+	}
+	
+	/**
+	 * Deletes the whole DB and fills it with new values in 'starting' state.
+	 */
+	public void startAlerting()
+	{
+		SimpleDateFormat df = new SimpleDateFormat();
+		String timeStr = df.format(new Date());
+		
+		cr.delete(ResponseStates.CONTENT_URI, null, null);
+		PhoneBook pb = new PhoneBook(cr);
+		List<PhoneBookEntry> everybody = pb.getStarred();
+		for(PhoneBookEntry e: everybody) {
+			ContentValues values = new ContentValues();
+			
+			values.put(ResponseStates.ID,    e.getId());
+			values.put(ResponseStates.STATE, RESPONDER_STATE_IDLE);
+			values.put(ResponseStates.TEXT,  "");
+			values.put(ResponseStates.TIME,  timeStr);
+			values.put(ResponseStates.TRIES, 0);
+			
+			cr.insert(ResponseStates.CONTENT_URI, values);
+		}
 	}
 	
 	public String[] getPending()
@@ -65,8 +104,8 @@ public class ResponseStatusModel {
 		List<String> list = new ArrayList<String>();
 		Cursor cur = cr.query(ResponseStates.CONTENT_URI, 
 			null, 
-			ResponseStates.STATE + " <= ?", 
-			new String[] { new Integer(RESPONDER_STATE_DELIVERED).toString() },
+			where, 
+			whereArgs,
 			null);
 		
         while(cur.moveToNext()) {
@@ -80,6 +119,7 @@ public class ResponseStatusModel {
         }
         
         cur.close();
+        
         return (String[]) list.toArray();
 	}
 }

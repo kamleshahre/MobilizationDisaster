@@ -23,13 +23,16 @@ public class main extends Activity {
     public void onCreate(Bundle savedInstanceState) {
     	Log.v("bla", "blub");
     	SMSSender s = new SMSSender();
-    	s.send(getApplicationContext(), 23, "0172-8757502", "Hallo Uwe!");
+    	//s.send(getApplicationContext(), 23, "0172-8757502", "Hallo Uwe!");
     	
         m_contacts = new PhoneBook(getContentResolver());
         m_model = new ResponseStatusModel(getContentResolver());
         
         m_contacts.getEverything();
         m_contacts.getStarred();
+        
+        m_model.startAlerting();
+        String[] bla = m_model.getPending();
     	super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
     
