@@ -32,7 +32,7 @@
         <activity android:name=".TabAllActivity"></activity>
         <activity android:name=".TabAcceptedActivity"></activity>
         <activity android:name=".TabDeniedActivity"></activity>
-        <activity android:name=".TabUnknownActivity"></activity>
+        <activity android:name="TabPendingActivity"></activity>
         
 
 		<receiver android:name=".receiver.SMSReceiver" android:enabled="true">
