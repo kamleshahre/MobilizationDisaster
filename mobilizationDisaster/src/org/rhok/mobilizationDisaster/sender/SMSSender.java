@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.telephony.SmsManager;
 import android.util.Log;
-import android.widget.Toast;
 
 public class SMSSender extends BroadcastReceiver {
 
@@ -61,7 +60,7 @@ public class SMSSender extends BroadcastReceiver {
 			if(reason.equals(SENT))
 			{
 				Log.v(TAG, "SMS sent for UID="+userId);
-				model.update(userId, ResponseStatusModel.RESPONDER_STATE_SENT, new Date(), null, -1);
+				model.update(userId, ResponseStatusModel.RESPONDER_STATE_SENT, null, new Date(), -1);
 			}
 			else
 				if(reason.equals(DELIVERED))
