@@ -16,7 +16,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class TabAcceptedActivity extends Activity{
-	private ArrayAdapter<String> mAdapter;
+	private AwesomeCursorAdapter mAdapter;
 	private String[] mData;
 	
 	public void onCreate(Bundle savedInstanceState) {
@@ -30,8 +30,8 @@ public class TabAcceptedActivity extends Activity{
 	  
 	  ListView lv = new ListView(this);
 	  lv.setTextFilterEnabled(true);
-	  mData = model.getYes();
-	  mAdapter = new ArrayAdapter<String>(this, R.layout.list_item, mData);
+	  
+	  mAdapter = new AwesomeCursorAdapter(this, model.getYes());
 	  lv.setAdapter(mAdapter);
 	  setContentView(lv);
 	  
@@ -65,13 +65,19 @@ public class TabAcceptedActivity extends Activity{
 	
 	public void update() {
 		  ResponseStatusModel model = new ResponseStatusModel(getContentResolver());
-		  mData = model.getYes();
+		  //mData = model.getYes();
 		  mAdapter.notifyDataSetChanged();
 	}
 	
-	 @Override
-	  public void onResume() {
-		  super.onResume();
-		  update();
-	  }
+	@Override
+	public void onResume() {
+		super.onResume();
+		update();
+  	}
+	 
+	@Override
+	public void onStart() {
+		super.onStart();
+		update();
+	}	
 }

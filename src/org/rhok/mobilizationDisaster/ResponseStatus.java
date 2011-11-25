@@ -21,7 +21,8 @@ public class ResponseStatus extends ListActivity {
 	  
 	  ResponseStatusModel model = new ResponseStatusModel(getContentResolver());
 	  
-	  setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, model.getPending()));
+	  // setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, model.getPending()));
+	  setListAdapter(new AwesomeCursorAdapter(this, model.getPending()));
 
 	  ListView lv = getListView();
 	  lv.setTextFilterEnabled(true);

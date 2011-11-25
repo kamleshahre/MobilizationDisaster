@@ -11,6 +11,9 @@ import org.rhok.mobilizationDisaster.providers.ResponseStatus.ResponseStates;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.net.Uri;
+import android.provider.BaseColumns;
+import android.provider.ContactsContract;
 
 /**
  * This class is a wrapper around the ContentProvider interface to the
@@ -61,11 +64,36 @@ public class ResponseStatusModel {
 			new String[] { new Integer(userId).toString() } );
 	}
 	
+	public void cameIn(String number)
+	{
+		
+	    Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
+	    String name = "?";
+
+	    
+	    Cursor contactLookup = cr.query(uri, new String[] {BaseColumns._ID,
+	            ContactsContract.PhoneLookup.DISPLAY_NAME }, null, null, null);
+	    
+	    try {
+	        if (contactLookup != null && contactLookup.getCount() > 0) {
+	            contactLookup.moveToNext();
+	            int contactId = contactLookup.getInt(contactLookup.getColumnIndex(BaseColumns._ID));
+	            update(contactId, RESPONDER_STATE_YES, "n/a", new Date(), 0);
+	        }
+	    } finally {
+	        if (contactLookup != null) {
+	            contactLookup.close();
+	        }
+	    }
+	    
+	}
+	
 	/**
 	 * Deletes the whole DB and fills it with new values in 'starting' state.
 	 */
 	public void startAlerting()
 	{
+		this.state = ALERTING;
 		SimpleDateFormat df = new SimpleDateFormat();
 		String timeStr = df.format(new Date());
 
@@ -84,6 +112,7 @@ public class ResponseStatusModel {
 			cr.insert(ResponseStates.CONTENT_URI, values);
 		}
 	}
+	
 	public List<PhoneBookEntry> getPendingNumbers()
 	{
 		List<PhoneBookEntry> list = new ArrayList<PhoneBookEntry>();
@@ -107,31 +136,36 @@ public class ResponseStatusModel {
         return list;
 	}
 	
-	public String[] getPending()
+	public Cursor getPending()
 	{
 		return getListByCriterion(ResponseStates.STATE + " < ?",
 			new String[] { "10" });
 	}
 	
-	public String[] getYes()
+	public Cursor getYes()
 	{
 		return getListByCriterion(ResponseStates.STATE + " = ?",
 			new String[] { new Integer(RESPONDER_STATE_YES).toString() });
 	}
 	
-	public String[] getNo()
+	public Cursor getNo()
 	{
 		return getListByCriterion(ResponseStates.STATE + " = ?",
 			new String[] { new Integer(RESPONDER_STATE_NO).toString() });
+	}
+	
+	public Cursor getAll()
+	{
+		return getListByCriterion(null, null);
 	}
 	
 	/**
 	 * Example: getListByCriterion("name = ?", new String[] { "Henner Piffendeckel" });
 	 * @param where The where-clause with ? as placeholder for the args
 	 * @param whereArgs the args that replace the ?-placeholders.
-	 * @return a simple String array
+	 * @return A cursor
 	 */
-	public String[] getListByCriterion(String where, String[] whereArgs)
+	public Cursor getListByCriterion(String where, String[] whereArgs)
 	{
 		List<String> list = new ArrayList<String>();
 		Cursor cur = cr.query(ResponseStates.CONTENT_URI, 
@@ -150,11 +184,7 @@ public class ResponseStatusModel {
         	}
         }
         
-        cur.close();
-        String[] result = new String[list.size()];
-        for(int i = 0; i < list.size(); ++i) {
-        	result[i] = list.get(i);
-        }
-        return result;
+        return cur;
+        
 	}
 }

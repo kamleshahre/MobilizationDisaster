@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">hello</string>
+    <string name="app_name">mobilizationDisaster</string>
+    <string name="responseStatus">Antwort-Status</string>
+    <string name="alert_message">Es gibt einen Alarm! Bitte erscheinen Sie im Hauptquartier.</string>
+    <string name="last_activation">Letzte Alarmierung gestartet am:</string>
+    <string name="alert_state_label">Alarmierungs-Status</string>
+    <string name="alert_state_true">Alamierung läuft.</string>
+    <string name="alert_state_false">Nicht aktiv.</string>
+    <string name="start_alert_button_text">Alarmierung starten</string>
+    <string name="stop_alert_button_text">Aktuelle Alarmierung stoppen</string>
+    <string name="alert_text_label">Alarmierungstext:</string>
+    <string name="launch_code_label">Sicherheitscode:</string>
+    <string name="launch_code_entry_label">Bitte wiederholen sie den Sicherheitscode</string>
+</resources>

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="hello">hello</string>
-    <string name="app_name">mobilizationDisaster</string>
-    <string name="responseStatus">Antwort-Status</string>
-</resources>

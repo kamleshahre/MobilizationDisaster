@@ -1,7 +1,12 @@
 package org.rhok.mobilizationDisaster;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,8 +16,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class TabDeclinedActivity extends Activity{
-	private ArrayAdapter<String> mAdapter;
-	private String[] mData;
+	private AwesomeCursorAdapter mAdapter;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,8 +29,8 @@ public class TabDeclinedActivity extends Activity{
 	  
 	  ListView lv = new ListView(this);
 	  lv.setTextFilterEnabled(true);
-	  mData = model.getNo();
-	  mAdapter = new ArrayAdapter<String>(this, R.layout.list_item, mData);
+	  
+	  mAdapter = new AwesomeCursorAdapter(this, model.getNo());
 	  lv.setAdapter(mAdapter);
 	  setContentView(lv);
 	  
@@ -40,18 +44,25 @@ public class TabDeclinedActivity extends Activity{
 	      Toast.makeText(getApplicationContext(), ((TextView) view).getText(),
 	          Toast.LENGTH_SHORT).show();
 	    }
-	  });  
-    }
+	  });
+	  
+	}
 	
 	public void update() {
 		  ResponseStatusModel model = new ResponseStatusModel(getContentResolver());
-		  mData = model.getNo();
+		  
 		  mAdapter.notifyDataSetChanged();
 	}
 	
-	 @Override
-	  public void onResume() {
-		  super.onResume();
-		  update();
-	  }
+	@Override
+	public void onResume() {
+		super.onResume();
+		update();
+  	}
+	 
+	@Override
+	public void onStart() {
+		super.onStart();
+		update();
+	}	
 }
